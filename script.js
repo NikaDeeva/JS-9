@@ -54,3 +54,58 @@ button.addEventListener('click', (e) => {
     localStorage.setItem('password', password);
     alert('Data saved');
 });
+// 4
+const list = document.getElementById('link-list');
+const addBtn = document.getElementById('addBtn');
+const removeBtn = document.getElementById('removeBtn');
+const links = document.querySelectorAll('#link');
+
+links.forEach(link => {
+    localStorage.setItem(link.textContent, link.href);
+});
+
+addBtn.addEventListener('click', (e) => {
+    const addedName = document.getElementById('addName');
+    const addedUrl = document.getElementById('addUrl');
+
+        const newLinkLi = document.createElement('li');
+        const newLinkA = document.createElement('a');
+
+        newLinkA.textContent = addedName.value;
+        newLinkA.href = addedUrl.value;
+        newLinkA.id = 'link';
+
+        newLinkLi.appendChild(newLinkA);
+        list.appendChild(newLinkLi);
+
+        localStorage.setItem(addedName.value, addedUrl.value);
+
+        addedName.value = '';
+        addedUrl.value = '';
+
+        if(addedName === '' || addedUrl === ''){
+            alert('Write all data');
+        }
+
+});
+removeBtn.addEventListener('click', () => {
+    const removedLinkName = document.getElementById('remove').value.trim();
+
+    if (removedLinkName === '') {
+        alert('Please provide a name to remove!');
+        return;
+    }
+    let linkFound = false;
+    links.forEach(link => {
+        if (link.textContent === removedLinkName) {
+            link.parentElement.remove(); 
+            localStorage.removeItem(removedLinkName); 
+            linkFound = true;
+        }
+    });
+
+    if (!linkFound) {
+        alert('This link is not in the list.');
+    }
+    document.getElementById('remove').value = '';
+});
